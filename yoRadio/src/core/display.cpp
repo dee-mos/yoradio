@@ -533,7 +533,7 @@ void Display::_time(bool redraw) {
   }
 #endif
   if(config.isScreensaver && network.timeinfo.tm_sec % 60 == 0)
-    _clock.moveTo({clockConf.left, random(TFT_FRAMEWDT+clockConf.textsize, (dsp.height()-TFT_FRAMEWDT*2)), 0});
+    _clock.moveTo({clockConf.left, (uint16_t)random(TFT_FRAMEWDT+clockConf.textsize, (dsp.height()-TFT_FRAMEWDT*2)), 0});
   _clock.draw();
   /*#ifdef USE_NEXTION
     nextion.printClock(network.timeinfo);
