@@ -1,0 +1,6 @@
+1. copy board\wt32-sc01_ver_3_2.json to C:\Users\user\.platformio\platforms\espressif32\boards\
+
+2. create dir C:\Users\user\.platformio\packages\framework-arduinoespressif32\variants\wt32-sc01 
+   copy board\pins_arduino.h to it
+
+
