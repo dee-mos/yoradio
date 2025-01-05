@@ -34,6 +34,10 @@
   #include "../GT911_Touchscreen/TAMC_GT911.h"
   TAMC_GT911 ts = TAMC_GT911(TS_SDA, TS_SCL, TS_INT, TS_RST, 0, 0);
   typedef TP_Point TSPoint;
+#elif TS_MODEL==TS_MODEL_FT6336U
+  #include "../FT6336U/FT6336U.h"
+  FT6336U ts = FT6336U(TS_SDA, TS_SCL, TS_RST, TS_INT);
+  typedef FT6336U_TouchPointType TSPoint;
 #endif
 
 void TouchScreen::init(){
@@ -54,6 +58,13 @@ void TouchScreen::init(){
 #if TS_MODEL==TS_MODEL_GT911
   ts.begin();
   ts.setRotation(config.store.fliptouch?0:2);
+#endif
+#if TS_MODEL==TS_MODEL_FT6336U
+  ts.begin();
+  Serial.print("FT6336U Firmware Version: ");
+  Serial.println(ts.read_firmware_id());
+  Serial.print("FT6336U Device Mode: ");
+  Serial.println(ts.read_device_mode());
 #endif
   _width  = dsp.width();
   _height = dsp.height();
@@ -114,6 +125,11 @@ void TouchScreen::loop(){
     touchX = p.x;
     touchY = p.y;
   #endif
+  #if TS_MODEL==TS_MODEL_FT6336U
+    TSPoint p = ts.scan();
+    touchX = p.tp[0].x;
+    touchY = p.tp[0].y;
+  #endif
   if (!wastouched) { /*     START TOUCH     */
       _oldTouchX = touchX;
       _oldTouchY = touchY;
@@ -156,9 +172,9 @@ void TouchScreen::loop(){
     }
     if (config.store.dbgtouch) {
       Serial.print(", x = ");
-      Serial.print(p.x);
+      Serial.print(touchX);
       Serial.print(", y = ");
-      Serial.println(p.y);
+      Serial.println(touchY);
     }
   }else{
     if (wastouched) {/*     END TOUCH     */
@@ -190,6 +206,8 @@ bool TouchScreen::_istouched(){
   return ts.touched();
 #elif TS_MODEL==TS_MODEL_GT911
   return ts.isTouched;
+#elif TS_MODEL==TS_MODEL_FT6336U
+  return ts.read_td_status() > 0;
 #endif
 }
 
