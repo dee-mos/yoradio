@@ -1,0 +1,10 @@
+name=FT6336U CTP Controller
+version=1.0.2
+author=Atsushi Sasaki
+maintainer=Atsushi Sasaki
+sentence=Arduino FT6336U CTP Controller library
+paragraph=Arduino FT6336U CTP Controller library
+category=Sensors
+url=https://github.com/dee-mos/Arduino-FT6336U
+architectures=*
+includes=FT6336U.h
