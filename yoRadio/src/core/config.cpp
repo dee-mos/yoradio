@@ -678,6 +678,7 @@ bool Config::initNetwork() {
   }
   char ssidval[30], passval[40];
   uint8_t c = 0;
+ 
   while (file.available()) {
     if (parseSsid(file.readStringUntil('\n').c_str(), ssidval, passval)) {
       strlcpy(ssids[c].ssid, ssidval, 30);
